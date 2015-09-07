@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Settings"
+        android:id="@+id/settingsTextView"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:textColor="#26015d"
+        android:textSize="35dp"
+        android:typeface="normal"
+        android:textStyle="bold"
+        android:gravity="center|center_vertical|center_horizontal" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_row="2"
+        android:layout_column="0" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Dia: "
+        android:id="@+id/diaTextView"
+        android:layout_row="1"
+        android:layout_column="0" />
+
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:background="#000000"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hora: "
+        android:id="@+id/horaTextView"
+        android:layout_row="4"
+        android:layout_column="0" />
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        android:layout_row="5"
+        android:layout_column="0"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:paddingTop="10dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Listo!"
+        android:id="@+id/button"
+        android:onClick="saveSettings"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="6"
+        android:layout_column="0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" />
+</GridLayout>
+
+</ScrollView>
