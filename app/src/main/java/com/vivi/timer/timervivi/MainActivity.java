@@ -15,7 +15,7 @@ import java.util.GregorianCalendar;
 public class MainActivity extends ActionBarActivity {
 
     private CountDownTimer countdowntimer;
-    private TextView hrsTxt, minTxt, secTxt;
+    private TextView hrsTxt, minTxt, secTxt, runningTxt, stopTxt;
     private long milisecondsFuture;
     private Button timerSetupButton;
     private boolean setup_done;
@@ -23,12 +23,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Set view objects
-
         Intent intent = getIntent();
         int date [] = intent.getIntArrayExtra("date"); //yyyy/mm/dd
         int time [] = intent.getIntArrayExtra("time"); //hr/min
-
 
         if(date != null && time != null){
             // set the time out in seconds
@@ -39,19 +36,25 @@ public class MainActivity extends ActionBarActivity {
             setup_done = true;
         }else{
             milisecondsFuture = 0;
-            //make button visible again
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initialize all text views
         hrsTxt = (TextView) findViewById(R.id.hoursText);
         minTxt = (TextView) findViewById(R.id.minutesText);
         secTxt = (TextView) findViewById(R.id.secondsText);
 
+        runningTxt = (TextView) findViewById(R.id.runningText);
+        stopTxt = (TextView) findViewById(R.id.stopText);
+
         this.timerSetupButton = (Button) findViewById(R.id.timerSetupButton);
-        if(setup_done)
+        if(setup_done){
             timerSetupButton.setVisibility(View.INVISIBLE);
+            runningTxt.setVisibility(View.VISIBLE);
+            stopTxt.setVisibility(View.INVISIBLE);
+        }
         this.setCountDown();
         countdowntimer.start();
     }
@@ -125,7 +128,8 @@ public class MainActivity extends ActionBarActivity {
                 drawCountDown(0);
                 setup_done = false;
                 timerSetupButton.setVisibility(View.VISIBLE);
-                //System.out.println("======== Finished!!!! =========");
+                runningTxt.setVisibility(View.INVISIBLE);
+                stopTxt.setVisibility(View.VISIBLE);
             }
         };
     }

@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">TimerVivi</string>
+    <string name="app_name">Vivi Timer</string>
 
     <string name="hello_world">Hola Vivi</string>
     <string name="legend">Ya solo te quedan..</string>
-    <string name="footer_legend">Y eres libre!!!</string>
+    <string name="footer_legend">Eres una Vivi libre!!!</string>
     <string name="settings">Settings</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Timer Settings</string>

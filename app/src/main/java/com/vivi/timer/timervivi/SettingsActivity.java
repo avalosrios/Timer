@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -69,5 +70,12 @@ public class SettingsActivity extends ActionBarActivity {
         intent.putExtra("date", new int[] {yyyy,mm,dd});
         intent.putExtra("time", new int[] {h,m});
         startActivity(intent);
+        Toast.makeText(this, "Let the hunger games begin!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed(){
+        // do something here and don't write super.onBackPressed()
+        this.saveSettings(null);
     }
 }
