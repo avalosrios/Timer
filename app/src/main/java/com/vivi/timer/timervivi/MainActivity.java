@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.GregorianCalendar;
 
@@ -15,13 +17,18 @@ public class MainActivity extends ActionBarActivity {
     private CountDownTimer countdowntimer;
     private TextView hrsTxt, minTxt, secTxt;
     private long milisecondsFuture;
+    private Button timerSetupButton;
+    private boolean setup_done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //Set view objects
+
         Intent intent = getIntent();
         int date [] = intent.getIntArrayExtra("date"); //yyyy/mm/dd
         int time [] = intent.getIntArrayExtra("time"); //hr/min
+
 
         if(date != null && time != null){
             // set the time out in seconds
@@ -29,8 +36,10 @@ public class MainActivity extends ActionBarActivity {
             long current_ms = System.currentTimeMillis();
             GregorianCalendar future_date = new GregorianCalendar(date[0], date[1], date[2], time[0], time[1]);
             this.milisecondsFuture = future_date.getTimeInMillis() - current_ms;
+            setup_done = true;
         }else{
             milisecondsFuture = 0;
+            //make button visible again
         }
 
         super.onCreate(savedInstanceState);
@@ -40,6 +49,9 @@ public class MainActivity extends ActionBarActivity {
         minTxt = (TextView) findViewById(R.id.minutesText);
         secTxt = (TextView) findViewById(R.id.secondsText);
 
+        this.timerSetupButton = (Button) findViewById(R.id.timerSetupButton);
+        if(setup_done)
+            timerSetupButton.setVisibility(View.INVISIBLE);
         this.setCountDown();
         countdowntimer.start();
     }
@@ -61,13 +73,21 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             System.out.println("============== SETTINGS!! =================");
-            // TODO open settings
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            // TODO open settings and pass a view object
+            this.startSettingsActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSettingsActivity(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void buttonClickHandler(View v){
+        startSettingsActivity();
     }
 
     private void drawCountDown(long millisToFinish){
@@ -79,9 +99,15 @@ public class MainActivity extends ActionBarActivity {
 
         hours = millisToFinish/(1000 * 60 * 60);
 
-        hrsTxt.setText(hours + "");
-        minTxt.setText(minutes + "");
-        secTxt.setText(seconds + "");
+        hrsTxt.setText(numberToFormattedString(hours));
+        minTxt.setText(numberToFormattedString(minutes));
+        secTxt.setText(numberToFormattedString(seconds));
+    }
+
+    private String numberToFormattedString(long n){
+        if(n < 10)
+            return "0"+n;
+        return n+"";
     }
 
     private void setCountDown(){
@@ -97,6 +123,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onFinish() {
                 drawCountDown(0);
+                setup_done = false;
+                timerSetupButton.setVisibility(View.VISIBLE);
                 //System.out.println("======== Finished!!!! =========");
             }
         };
