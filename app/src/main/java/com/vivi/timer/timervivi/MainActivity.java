@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        if(savedInstanceState != null){
+            // TODO retrieved an saved object
+            //mCustomDate = savedInstanceState.getIntegerArrayList("date");
+            Log.d(this.getLocalClassName(), "SavedInstanceState present!");
+        }
         Intent intent = getIntent();
         int date [] = intent.getIntArrayExtra("date"); //yyyy/mm/dd
         int time [] = intent.getIntArrayExtra("time"); //hr/min
@@ -83,6 +89,12 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /* This is not a great idea
+    @Override
+    public void onBackPressed(){
+        Log.d(this.getLocalClassName(), "Back button pressed");
+    }*/
 
     private void startSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);

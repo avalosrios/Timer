@@ -64,11 +64,12 @@ public class SettingsActivity extends ActionBarActivity {
         int mm = datePicker.getMonth();
         int dd = datePicker.getDayOfMonth();
 
-        System.out.println("Time Picker  hour " + h + " min "+m);
+        System.out.println("Time Picker  hour " + h + " min " + m);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("date", new int[] {yyyy,mm,dd});
         intent.putExtra("time", new int[] {h,m});
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         Toast.makeText(this, "Let the hunger games begin!", Toast.LENGTH_LONG).show();
     }
