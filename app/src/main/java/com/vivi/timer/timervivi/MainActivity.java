@@ -1,6 +1,9 @@
 package com.vivi.timer.timervivi;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,41 +13,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private CountDownTimer countdowntimer;
     private TextView hrsTxt, minTxt, secTxt, runningTxt, stopTxt;
     private long milisecondsFuture;
     private Button timerSetupButton;
     private boolean setup_done;
+    private SharedPreferences mPrefs;
+    private GregorianCalendar future_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(savedInstanceState != null){
-            // TODO retrieved an saved object
-            //mCustomDate = savedInstanceState.getIntegerArrayList("date");
-            Log.d(this.getLocalClassName(), "SavedInstanceState present!");
-        }
-        Intent intent = getIntent();
-        int date [] = intent.getIntArrayExtra("date"); //yyyy/mm/dd
-        int time [] = intent.getIntArrayExtra("time"); //hr/min
-
-        if(date != null && time != null){
-            // set the time out in seconds
-            // calculate the current time in ms
-            long current_ms = System.currentTimeMillis();
-            GregorianCalendar future_date = new GregorianCalendar(date[0], date[1], date[2], time[0], time[1]);
-            this.milisecondsFuture = future_date.getTimeInMillis() - current_ms;
-            setup_done = true;
-        }else{
-            milisecondsFuture = 0;
-        }
-
+        mPrefs = getSharedPreferences("ViviTimer.prefs", Context.MODE_PRIVATE);
+        Log.i(this.getLocalClassName(), "prefs " + this.mPrefs);
+        this.setMilisecondsFuture();
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         //initialize all text views
@@ -65,6 +56,54 @@ public class MainActivity extends ActionBarActivity {
         countdowntimer.start();
     }
 
+    private int[] extractFromPreferences(String [] keys){
+        int result [] = new int [keys.length];
+        for(int i=0; i< keys.length; i++){
+            int val =  mPrefs.getInt(keys[i], -1);
+            if (val >= 0){
+                result[i] = val;
+            }else {
+                // TODO throw exception
+                Log.i(this.getLocalClassName(), "Key not found "+keys[i]);
+            }
+        }
+        return result;
+    }
+
+    private void setMilisecondsFuture(){
+        Intent intent = getIntent();
+        int [] date = intent.getIntArrayExtra("date"); //yyyy/mm/dd
+        int [] time = intent.getIntArrayExtra("time"); //hr/min
+
+        if(!this.mPrefs.getAll().isEmpty()){
+            // try to populate date and time with shared preferences
+            Log.d(this.getLocalClassName(), "Extracting from shared preferences");
+
+            // For date we got 3 keys yyyy mm and dd
+            String date_keys[] = new String[] {"yyyy","mm","dd"};
+            date = extractFromPreferences(date_keys);
+
+            String time_keys[] = new String[] {"h", "m"};
+            time = extractFromPreferences(time_keys);
+
+        }
+
+        if(date != null && time != null){
+            // set the time out in seconds
+            // calculate the current time in ms
+            long current_ms = System.currentTimeMillis();
+
+            this.future_date = new GregorianCalendar(date[0], date[1], date[2], time[0], time[1]);//yyyy/mm/dd hr/min
+
+            this.milisecondsFuture = future_date.getTimeInMillis() - current_ms;
+            this.setup_done = true;
+
+        } else {
+            this.milisecondsFuture = 0;
+        }
+        Log.d(this.getLocalClassName(), "milisecondsFuture " + this.milisecondsFuture);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -81,13 +120,24 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            System.out.println("============== SETTINGS!! =================");
+            Log.d(this.getLocalClassName(), "============== SETTINGS!! =================");
             // TODO open settings and pass a view object
             this.startSettingsActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onPause(){
+        super.onPause();
+        SharedPreferences.Editor ed = mPrefs.edit();
+        String date_str = this.future_date.get(Calendar.YEAR) + "-" + future_date.get(Calendar.MONTH)
+                + "-" +future_date.get(Calendar.DAY_OF_MONTH) + "-" + future_date.get(Calendar.HOUR_OF_DAY)
+                + "-" + future_date.get(Calendar.MINUTE);
+        Log.i(this.getLocalClassName(), date_str);
+        ed.putString("GregorianDate", date_str);
+        ed.apply(); // commit for non bg task
     }
 
     /* This is not a great idea
@@ -142,6 +192,8 @@ public class MainActivity extends ActionBarActivity {
                 timerSetupButton.setVisibility(View.VISIBLE);
                 runningTxt.setVisibility(View.INVISIBLE);
                 stopTxt.setVisibility(View.VISIBLE);
+                // Clar all shared preferences
+                mPrefs.edit().clear().commit();
             }
         };
     }

@@ -170,8 +170,8 @@
             android:layout_height="wrap_content"
             android:text="Timer setup"
             android:id="@+id/timerSetupButton"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:onClick="buttonClickHandler"
+            style="@style/ButtonTextVivi"
             android:layout_column="0" />
     </TableRow>
 

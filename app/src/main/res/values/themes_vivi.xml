@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="Vivi" parent="@style/_Vivi"/>
+
+  <style name="_Vivi" parent="Theme.AppCompat.Light">
+
+    <item name="android:buttonStyle">@style/ButtonVivi</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonVivi</item>
+
+    <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+
+  </style>
+
+</resources>

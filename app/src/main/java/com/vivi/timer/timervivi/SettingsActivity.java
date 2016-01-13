@@ -1,6 +1,8 @@
 package com.vivi.timer.timervivi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,15 +15,19 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 
 public class SettingsActivity extends ActionBarActivity {
 
     private Button okButton;
     private DatePicker datePicker;
     private TimePicker timePicker;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mPrefs = getSharedPreferences("ViviTimer.prefs", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
     }
@@ -67,8 +73,26 @@ public class SettingsActivity extends ActionBarActivity {
         System.out.println("Time Picker  hour " + h + " min " + m);
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("date", new int[] {yyyy,mm,dd});
-        intent.putExtra("time", new int[] {h,m});
+        int [] date_array =  new int[] {yyyy,mm,dd};
+        int [] time_array = new int[] {h,m};
+        intent.putExtra("date", date_array);
+        intent.putExtra("time", time_array);
+
+
+        //Save data on shared preferences
+        SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putInt("yyyy", yyyy);
+        ed.putInt("mm", mm);
+        ed.putInt("dd", dd);
+
+        ed.putInt("h", h);
+        ed.putInt("m", m);
+
+        ed.apply();
+
+
+
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         Toast.makeText(this, "Let the hunger games begin!", Toast.LENGTH_LONG).show();
