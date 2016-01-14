@@ -131,13 +131,6 @@ public class MainActivity extends Activity {
 
     protected void onPause(){
         super.onPause();
-        SharedPreferences.Editor ed = mPrefs.edit();
-        String date_str = this.future_date.get(Calendar.YEAR) + "-" + future_date.get(Calendar.MONTH)
-                + "-" +future_date.get(Calendar.DAY_OF_MONTH) + "-" + future_date.get(Calendar.HOUR_OF_DAY)
-                + "-" + future_date.get(Calendar.MINUTE);
-        Log.i(this.getLocalClassName(), date_str);
-        ed.putString("GregorianDate", date_str);
-        ed.apply(); // commit for non bg task
     }
 
     /* This is not a great idea
