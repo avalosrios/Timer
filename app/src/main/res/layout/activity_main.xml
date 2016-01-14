@@ -171,7 +171,6 @@
             android:text="Timer setup"
             android:id="@+id/timerSetupButton"
             android:onClick="buttonClickHandler"
-            style="@style/ButtonTextVivi"
             android:layout_column="0" />
     </TableRow>
 
