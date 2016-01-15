@@ -18,19 +18,21 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     private CountDownTimer countdowntimer;
-    private TextView hrsTxt, minTxt, secTxt, runningTxt, stopTxt;
+    private TextView header, hrsTxt, minTxt, secTxt, runningTxt, stopTxt;
     private long milisecondsFuture;
     private Button timerSetupButton;
     private boolean setup_done;
     private SharedPreferences mPrefs;
     private GregorianCalendar future_date;
+    private RandomMessages headerMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        this.headerMessages = new RandomMessages();
         mPrefs = getSharedPreferences("ViviTimer.prefs", Context.MODE_PRIVATE);
         Log.i(this.getLocalClassName(), "prefs " + this.mPrefs);
         this.setMilisecondsFuture();
@@ -42,6 +44,7 @@ public class MainActivity extends Activity {
         hrsTxt = (TextView) findViewById(R.id.hoursText);
         minTxt = (TextView) findViewById(R.id.minutesText);
         secTxt = (TextView) findViewById(R.id.secondsText);
+        header = (TextView) findViewById(R.id.header);
 
         runningTxt = (TextView) findViewById(R.id.runningText);
         stopTxt = (TextView) findViewById(R.id.stopText);
@@ -129,6 +132,21 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        // display random "meloso" message
+        this.displayMessage();
+    }
+
+
+    private void displayMessage(){
+        // only when timer is set
+        if(setup_done){
+            this.header.setText(this.headerMessages.pickOne());
+        }
+    }
+
     protected void onPause(){
         super.onPause();
     }
@@ -185,6 +203,7 @@ public class MainActivity extends Activity {
                 timerSetupButton.setVisibility(View.VISIBLE);
                 runningTxt.setVisibility(View.INVISIBLE);
                 stopTxt.setVisibility(View.VISIBLE);
+                header.setText(R.string.hello_world);
                 // Clar all shared preferences
                 mPrefs.edit().clear().commit();
             }

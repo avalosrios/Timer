@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-        <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
                 <!-- Default Theme -->
                 <item name="colorPrimary">@android:color/holo_purple</item>
                 <item name="colorAccent">@color/vivi_color</item>
@@ -10,10 +10,11 @@
                 <item name="android:navigationBarColor">@android:color/holo_purple</item>
                 <item name="android:statusBarColor">@android:color/holo_purple</item>
                 <item name="colorPrimaryDark">@color/vivi_color</item>
-                <item name="android:textColorPrimary">@color/primary_text_default_material_light</item>
+                <item name="android:textColorPrimary">@android:color/primary_text_light</item>
                 <item name="android:textColorPrimaryInverse">@color/background_material_dark</item>
                 <item name="android:textColorSecondaryInverse">@color/ic_bear_launcher</item>
                 <item name="android:windowBackground">@color/background_material_light</item>
                 <item name="android:textColorSecondary">@color/material_grey_600</item>
+                <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         </style>
 </resources>

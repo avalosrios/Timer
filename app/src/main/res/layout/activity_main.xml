@@ -11,7 +11,7 @@
 
         <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
+            android:id="@+id/header"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
@@ -20,7 +20,10 @@
             android:textSize="35dp"
             android:typeface="normal"
             android:textStyle="bold"
-            android:gravity="center|center_vertical|center_horizontal" />
+            android:gravity="center|center_vertical|center_horizontal"
+            android:autoText="true"
+            android:elegantTextHeight="true"
+            android:paddingRight="10dp" />
     </TableRow>
 
     <TableRow
