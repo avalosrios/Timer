@@ -13,7 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -29,10 +38,15 @@ public class MainActivity extends ActionBarActivity {
     private GregorianCalendar future_date;
     private RandomMessages headerMessages;
 
+    // Firebase instance variables
+    private DatabaseReference mFirebaseDatabaseReference;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        this.headerMessages = new RandomMessages();
+        this.mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        this.initializeMessages();
         mPrefs = getSharedPreferences("ViviTimer.prefs", Context.MODE_PRIVATE);
         Log.i(this.getLocalClassName(), "prefs " + this.mPrefs);
         this.setMilisecondsFuture();
@@ -143,7 +157,7 @@ public class MainActivity extends ActionBarActivity {
     private void displayMessage(){
         // only when timer is set
         if(setup_done){
-            this.header.setText(this.headerMessages.pickOne());
+            initializeMessages();
         }
     }
 
@@ -208,5 +222,30 @@ public class MainActivity extends ActionBarActivity {
                 mPrefs.edit().clear().commit();
             }
         };
+    }
+
+
+    private void initializeMessages(){
+        this.mFirebaseDatabaseReference.child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get user value
+                // User user = dataSnapshot.getValue(User.class);
+                // TODO dataSnapshot to receive RandomMessage Class
+                System.out.println(dataSnapshot.getValue());
+                ArrayList <String> values = (ArrayList<String>)dataSnapshot.getValue();
+                MainActivity.this.headerMessages = new RandomMessages(values.toArray());
+                System.out.println(MainActivity.this.headerMessages.pickOne());
+                MainActivity.this.header.setText(MainActivity.this.headerMessages.pickOne());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("RandomMessages", "getMessage:onCancelled", databaseError.toException());
+                // ...
+                MainActivity.this.headerMessages = new RandomMessages();
+            }
+        });
+        //this.headerMessages = new RandomMessages();
     }
 }

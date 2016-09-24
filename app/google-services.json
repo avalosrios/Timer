@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "865057502240",
+    "firebase_url": "https://timervivi.firebaseio.com",
+    "project_id": "timervivi",
+    "storage_bucket": "timervivi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865057502240:android:0cdc87496274001f",
+        "android_client_info": {
+          "package_name": "com.vivi.timer.timervivi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865057502240-3496adlk386utmgi7a203t9na4puvfm8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKYtiA_aay0t4ZZK90LR5b8B3cmB-kHU4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
