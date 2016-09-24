@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -232,10 +233,8 @@ public class MainActivity extends ActionBarActivity {
                 // Get user value
                 // User user = dataSnapshot.getValue(User.class);
                 // TODO dataSnapshot to receive RandomMessage Class
-                System.out.println(dataSnapshot.getValue());
                 ArrayList <String> values = (ArrayList<String>)dataSnapshot.getValue();
                 MainActivity.this.headerMessages = new RandomMessages(values.toArray());
-                System.out.println(MainActivity.this.headerMessages.pickOne());
                 MainActivity.this.header.setText(MainActivity.this.headerMessages.pickOne());
             }
 
@@ -244,6 +243,7 @@ public class MainActivity extends ActionBarActivity {
                 Log.w("RandomMessages", "getMessage:onCancelled", databaseError.toException());
                 // ...
                 MainActivity.this.headerMessages = new RandomMessages();
+                MainActivity.this.header.setText(MainActivity.this.headerMessages.pickOne());
             }
         });
         //this.headerMessages = new RandomMessages();
